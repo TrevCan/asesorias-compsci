@@ -3,9 +3,10 @@
 import os
 import time
 
-sleep_time = 0.5
+sleep_time = 0.2
 
 max_x = 79
+max_x = 20
 min_x = 1
 max_y = 20
 min_y = 1
@@ -13,6 +14,14 @@ x = 1
 y = 1
 blankSeparator='.'
 star='*'
+
+DEBUG_ = False
+
+def debug(s):
+    if DEBUG_:
+        print(s)
+
+
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -29,17 +38,19 @@ def showGrid(x,y):
 
     if(y < 1):
         y = max_y + y
+        debug('less than oneee')
     elif(y > max_y):
         y = y - max_y
 
 
+    # print spaces from line 1 to y-1
     for yp in range(min_y,y):
         print(blankSeparator*max_x)
 
     print(blankSeparator*(x-min_x), end='')
     print(star, end='')
     print(blankSeparator*(max_x-x))
-    for yp in range(min_y,max_y-y):
+    for yp in range(y+1,max_y+1):
         print(blankSeparator*max_x)
 
 def inRangeAbsoluteX(x):
@@ -64,19 +75,20 @@ def animate(posx,posy,posnx,posny):
         # move to the left
         if not posx < posnx:
             step = -1
-            print('min111')
-        for x in range(posx,posnx+1,step):
+#            debug('min111')
+        for px in range(posx,posnx+step,step):
             clear()
-            showGrid(x,posy)
+            showGrid(px,posy)
             sleep(sleep_time)
+            debug('finxxxANIM')
     else:
         step = 1
         # move up
         if not posy < posny:
             step = -1
-        for y in range(posy,posny+1,step):
+        for py in range(posy,posny+step,step):
             clear()
-            showGrid(posx,y)
+            showGrid(posx,py)
             sleep(sleep_time)
 
 def menu():
@@ -98,7 +110,9 @@ def menu():
 
     while True:
 
-        option = input('elija una opcion:\t')
+        coords='@( ' + str(x) + ' ' + str(y) + ' )'
+        option = input(coords + 'elija una opcion:\t')
+        sleep(sleep_time)
         option = option.lower()
         match option:
             case '1' | 'w':
